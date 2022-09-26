@@ -20,7 +20,7 @@ public class DayButton : MonoBehaviour
     }
 
     public void OnClick() {
-        SceneDirector.GetComponent<MenuScene>().SelectDayButton(this.GetComponent<Outline>());
+        SceneDirector.GetComponent<HomeScene>().SelectDayButton(this.GetComponent<Outline>());
         this.GetComponent<Outline>().enabled = true;
         string text = this.GetComponentInChildren<TextMeshProUGUI>().text;
     }

@@ -28,6 +28,6 @@ public class MonthButton : MonoBehaviour
         }else{
             month += diffmonth;
         }
-        SceneDirector.GetComponent<MenuScene>().ChangeClaneder(year, month);
+        SceneDirector.GetComponent<HomeScene>().ChangeClaneder(year, month);
     }
 }

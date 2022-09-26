@@ -8,11 +8,13 @@ using Debug = UnityEngine.Debug;
 public class TopScene : MonoBehaviour
 {
     // Start is called before the first frame update
+    GameObject director;
     GameObject TextCode;
     GameObject TextQuiz;
     GameObject TextTap;
     void Start()
     {
+        director = GameObject.Find("GameDirector");
         TextCode = GameObject.Find("Code");
         TextQuiz = GameObject.Find("Quiz");
         TextTap = GameObject.Find("Tap");
@@ -20,21 +22,27 @@ public class TopScene : MonoBehaviour
     }
 
     public void MoveTitle(){
+        TextCode.GetComponent<Animator>().enabled = false;
+        TextQuiz.GetComponent<Animator>().enabled = false;
         TextCode.GetComponent<Transform>().localPosition = 
         new Vector3(
-            TextCode.GetComponent<TextAnimation>().stop_x, 
-            TextCode.GetComponent<TextAnimation>().stop_y,
+            -140, 
+            230,
             0
         );
         TextQuiz.GetComponent<Transform>().localPosition = 
         new Vector3(
-            TextQuiz.GetComponent<TextAnimation>().stop_x, 
-            TextQuiz.GetComponent<TextAnimation>().stop_y,
+            170, 
+            -130,
             0
         );
     }    
     public void VisualizeTap(){
         TextTap.GetComponent<TextMeshProUGUI>().text = "Tap";
+    }
+
+    public void MoveScene(){
+        director.GetComponent<GameDirector>().MoveScene("TopPage","LoadingPage");
     }
 
     //Colutine Method
