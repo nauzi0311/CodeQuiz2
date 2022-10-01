@@ -12,7 +12,6 @@ public class DayButton : MonoBehaviour
     {
         SceneDirector = GameObject.Find("SceneDirector");
         CheckMark = transform.Find("Image").gameObject;
-        CheckMark.SetActive(false);
     }
 
     // Update is called once per frame
@@ -25,6 +24,7 @@ public class DayButton : MonoBehaviour
     {
         SceneDirector.GetComponent<HomeScene>().SelectDayButton(this.GetComponent<Outline>());
         this.GetComponent<Outline>().enabled = true;
-        string text = this.GetComponentInChildren<TextMeshProUGUI>().text;
+        string day = this.GetComponentInChildren<TextMeshProUGUI>().text;
+        SceneDirector.GetComponent<HomeScene>().ClickCalender(day);
     }
 }

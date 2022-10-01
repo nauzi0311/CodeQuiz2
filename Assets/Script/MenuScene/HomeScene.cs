@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Diagnostics;
 using System.Net.Mime;
 using System;
@@ -27,6 +28,15 @@ public class HomeScene : MonoBehaviour
         DayBox = GameObject.Find("Day");
         TextYear = GameObject.Find("Year");
         TextMonth = GameObject.Find("Month");
+        int ulevel = GameDirector.userdata.level;
+        int upoint = GameDirector.userdata.point;
+        int umaxpoint = GameDirector.config.level[ulevel-1];
+        TextLevel = GameObject.Find("LevelText");
+        TextLevel.GetComponent<TextMeshProUGUI>().text = "Lv" + ulevel;
+        LevelScore = GameObject.Find("LevelScore");
+        LevelScore.GetComponent<TextMeshProUGUI>().text = upoint + "/" + umaxpoint;
+        SliderLevel = GameObject.Find("LevelSlider");
+        SliderLevel.GetComponent<Slider>().value = (float)upoint / umaxpoint;
         beforebutton = null;
         InitialCalender();
     }
@@ -44,8 +54,8 @@ public class HomeScene : MonoBehaviour
         TextYear.GetComponent<TextMeshProUGUI>().text = year.ToString();
         TextMonth.GetComponent<TextMeshProUGUI>().text = month.ToString() + "月";
         int day = today.Day;
-        float alpha_value = .4f;
-        DayOfWeek dow = new DateTime(year, month, 1).DayOfWeek;
+        float alpha_value = .4f;//当該月じゃない日にちのアルファ値
+        DayOfWeek dow = new DateTime(year, month, 1).DayOfWeek;//曜日判定
         GameObject DL1 = DayBox.transform.Find("DayLine1").gameObject;
         GameObject[] DL1arr = new GameObject[DL1.transform.childCount];
         for(int i = 0; i < DL1arr.Length; i++){
@@ -202,5 +212,34 @@ public class HomeScene : MonoBehaviour
 
     public void MoveScene(string ToPage){
         director.GetComponent<GameDirector>().MoveScene("HomePage",ToPage);
+    }
+
+    public void ClickCalender(string day){
+        string year = TextYear.GetComponent<TextMeshProUGUI>().text;
+        string month = TextMonth.GetComponent<TextMeshProUGUI>().text[..^1];
+        CalenderData data = new CalenderData(PlayerPrefs.GetString("UUID"), year + "-" + month + "-" + day);
+        StartCoroutine(CalenderCoroutine(data));
+    }
+
+    IEnumerator CalenderCoroutine(CalenderData data){
+        yield return StartCoroutine(GameDirector.WebReqPost("calender",CalenderData.Serialize(data)));
+        string res = GameDirector.GetResponse();
+    }
+
+    class CalenderData{
+        public string device,date;
+
+        public CalenderData(string _d,string _da){
+            device = _d;date = _da;
+        }
+
+        public static string Serialize(CalenderData data){
+            string json = JsonUtility.ToJson(data);
+            return json;
+        } 
+        public static CalenderData Deserialize(string json){
+            CalenderData _data = JsonUtility.FromJson<CalenderData>(json);
+            return _data;
+        }
     }
 }

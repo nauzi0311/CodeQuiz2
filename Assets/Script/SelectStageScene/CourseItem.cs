@@ -7,6 +7,8 @@ public class CourseItem : MonoBehaviour
 {
     GameObject director,image;
     public bool available = false;
+    public string course;
+    public int times;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,13 +26,23 @@ public class CourseItem : MonoBehaviour
     }
 
     public void OnClick(){
+        Debug.Log(course + "    " + times);
         if(available){
-            director.GetComponent<SelectStageScene>().MoveScene("QuizPage");
+            director.GetComponent<SelectStageScene>().MoveScene("QuizPage",course,times);
         }
     }
 
     public void SetTitle(string _t){
-        Debug.Log(_t);
+        Debug.Log(_t[1..^1]);
         transform.Find("Title").gameObject.GetComponent<TextMeshProUGUI>().text = _t;
+    }
+
+    public void SetAvailable(int course_num){
+        times = course_num;
+        if(GameDirector.userdata.level >= course_num){
+            available = true;
+        }else{
+            available = false;
+        }
     }
 }

@@ -42,11 +42,13 @@ public class CourseButton : MonoBehaviour
                     objlist.Add(Instantiate(prefab_CourseItem));
                     var obj = objlist[i];
                     obj.transform.SetParent(transform.parent,false);
+                    obj.GetComponent<CourseItem>().course = transform.Find("Title").gameObject.GetComponent<TextMeshProUGUI>().text;
                     obj.GetComponent<CourseItem>().SetTitle(CourseTitle[i]);
                     obj.transform.localPosition = _pos + new Vector3(0.0f,-(course_delta_y/2) - 150*(i + 1) + (course_item_delta_y/2),0);
-                    if(i == 0){
-                        obj.GetComponent<CourseItem>().available = true;
-                    }
+                    obj.GetComponent<CourseItem>().SetAvailable(i + 1);
+                    // if(i == 0){
+                    //     obj.GetComponent<CourseItem>().available = true;
+                    // }
                 }
                 parent.GetComponent<CourseManager>().Adjuster(1);
             }else{

@@ -11,7 +11,6 @@ public class LoadingScene : MonoBehaviour
     void Start()
     {
         uuid = PlayerPrefs.GetString("UUID");
-        Debug.Log(uuid);
         StartCoroutine(WaitLoading());
     }
 
@@ -19,7 +18,9 @@ public class LoadingScene : MonoBehaviour
         if(!string.IsNullOrWhiteSpace(uuid)){
             Data _data = new Data(uuid);
             yield return StartCoroutine(GameDirector.WebReqPost("index",Data.Serialize(_data)));
-            Debug.Log(GameDirector.GetResponse());
+            GameDirector.userdata = UserData.Deserialize(GameDirector.GetResponse());
+            string _conf = GameDirector.GetResponse().Substring(GameDirector.GetResponse().IndexOf("\"config\""))[9..^1];
+            GameDirector.config = Config.Deserialize(_conf);
             if(GameDirector.GetResponse().ToString() == "new"){
                 SceneManager.LoadScene("RegisterPage");
             }else{
@@ -44,7 +45,6 @@ public class LoadingScene : MonoBehaviour
 
         public static string Serialize(Data _data){
             string json = JsonUtility.ToJson(_data);
-            Debug.Log("json:" + json);
             return json;
         }
     }

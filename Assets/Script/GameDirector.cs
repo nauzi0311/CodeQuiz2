@@ -17,12 +17,34 @@ public class GameDirector : MonoBehaviour
     [SerializeField] Fade fade = null;
 
     GameObject fadecanvas = null;
-    string _ans1 = "p = (int*)malloc(sizeof(int)*4)";
-    string[] UAnswer = new string[7];
+    int _ans1 = 1;
+    public static int[] UAnswer;
+    public static int[] second_list;
+    public static bool[] correct_list;
     public static UserData userdata;
     public static Config config;
     static string HerePage, response;
-    static string server = "http://se.is.kit.ac.jp/beakfish/api/";
+    //static string server = "http://se.is.kit.ac.jp/beakfish/api/";
+    static string server = "http://localhost:3000/";
+
+    private void Awake() {
+        if(userdata == null){
+            userdata = new UserData();
+        }
+        if(config == null){
+            config = new Config();
+        }
+        if(UAnswer == null){
+            UAnswer = new int[7];
+        }
+        if(second_list == null){
+            second_list = new int[7];
+        }
+        if(correct_list == null){
+            correct_list = new bool[7];
+        }
+    }
+
     void Start()
     {
         fadecanvas = GameObject.Find("FadeCanvas");
@@ -38,7 +60,6 @@ public class GameDirector : MonoBehaviour
 
     public void MoveScene(string Here, string ToPage, float time = 1.0f)
     {
-        Debug.Log(ToPage);
         fade.FadeIn(time, () =>
         {
             HerePage = Here;
@@ -52,7 +73,7 @@ public class GameDirector : MonoBehaviour
         return HerePage;
     }
 
-    public string[] GetUAnswer()
+    public int[] GetUAnswer()
     {
         return UAnswer;
     }
@@ -64,31 +85,31 @@ public class GameDirector : MonoBehaviour
 
     public static IEnumerator WebReqGet(string uri)
     {
-        Debug.Log(server + uri);
-        UnityWebRequest req = UnityWebRequest.Get(server + uri);
-        yield return req.SendWebRequest();
-        if (req.result != UnityWebRequest.Result.Success)
-        {
-            switch (req.result)
+        using(UnityWebRequest req = UnityWebRequest.Get(server + uri)){
+            yield return req.SendWebRequest();
+            if (req.result != UnityWebRequest.Result.Success)
             {
-                case UnityWebRequest.Result.ConnectionError:
-                    Debug.Log("Connection Error");
-                    break;
-                case UnityWebRequest.Result.DataProcessingError:
-                    Debug.Log("Data Processing Error");
-                    break;
-                case UnityWebRequest.Result.ProtocolError:
-                    Debug.Log("Protocol Error");
-                    break;
-                default:
-                    Debug.Log("Unknown Error" + req.error);
-                    break;
+                switch (req.result)
+                {
+                    case UnityWebRequest.Result.ConnectionError:
+                        Debug.Log("Connection Error");
+                        break;
+                    case UnityWebRequest.Result.DataProcessingError:
+                        Debug.Log("Data Processing Error");
+                        break;
+                    case UnityWebRequest.Result.ProtocolError:
+                        Debug.Log("Protocol Error");
+                        break;
+                    default:
+                        Debug.Log("Unknown Error" + req.error);
+                        break;
+                }
             }
-        }
-        else
-        {
-            response = req.downloadHandler.text;
-            //You need calls GameDirector.GetResponse();
+            else
+            {
+                response = req.downloadHandler.text;
+                //You need calls GameDirector.GetResponse();
+            }
         }
     }
 
@@ -96,62 +117,45 @@ public class GameDirector : MonoBehaviour
     {
         //You need to change data json format
         byte[] post_data = Encoding.UTF8.GetBytes(data);
-        UnityWebRequest req = new UnityWebRequest(server + uri, UnityWebRequest.kHttpVerbPOST);
-        req.uploadHandler = (UploadHandler)new UploadHandlerRaw(post_data);
-        req.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        req.SetRequestHeader("Content-Type", "application/json");
-        yield return req.SendWebRequest();
-        if (req.result != UnityWebRequest.Result.Success)
-        {
-            switch (req.result)
+        using(UnityWebRequest req = new UnityWebRequest(server + uri, UnityWebRequest.kHttpVerbPOST)){
+            req.uploadHandler = (UploadHandler)new UploadHandlerRaw(post_data);
+            req.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            req.SetRequestHeader("Content-Type", "application/json");
+            yield return req.SendWebRequest();
+            if (req.result != UnityWebRequest.Result.Success)
             {
-                case UnityWebRequest.Result.ConnectionError:
-                    Debug.Log("Connection Error");
-                    break;
-                case UnityWebRequest.Result.DataProcessingError:
-                    Debug.Log("Data Processing Error");
-                    break;
-                case UnityWebRequest.Result.ProtocolError:
-                    Debug.Log("Protocol Error");
-                    break;
-                default:
-                    Debug.Log("Unknown Error" + req.error);
-                    break;
+                switch (req.result)
+                {
+                    case UnityWebRequest.Result.ConnectionError:
+                        Debug.Log("Connection Error");
+                        break;
+                    case UnityWebRequest.Result.DataProcessingError:
+                        Debug.Log("Data Processing Error");
+                        break;
+                    case UnityWebRequest.Result.ProtocolError:
+                        Debug.Log("Protocol Error");
+                        break;
+                    default:
+                        Debug.Log("Unknown Error" + req.error);
+                        break;
+                }
+            }
+            else
+            {
+                response = req.downloadHandler.text;
+                //You need calls GameDirector.GetResponse();
             }
         }
-        else
-        {
-            response = req.downloadHandler.text;
-            //You need calls GameDirector.GetResponse();
-        }
-    }
-}
-
-public class UserData
-{
-    public int level;
-    public int point;
-    public int[] correct_id;
-    public bool[] badge;
-    public string[] date;
-
-    public static UserData Deserialize(string json)
-    {
-        UserData _data = JsonUtility.FromJson<UserData>(json);
-        return _data;
-    }
-
-    public static string Serialize(UserData _data)
-    {
-        string json = JsonUtility.ToJson(_data);
-        Debug.Log("json:" + json);
-        return json;
     }
 }
 
 public class Config// : ISerializationCallbackReceiver
 {
     public int[] level;
+
+    public Config(){
+        level = new int[] {70};
+    }
     /*
     [SerializeField] private List<int> _keyList;
     [SerializeField] private List<int> _valueList;
@@ -186,6 +190,35 @@ public class Config// : ISerializationCallbackReceiver
         return _data;
     }
 }
+
+public class UserData
+{
+    public int school_num;
+    public int level;
+    public int point;
+    public int[] correct_id;
+    public int correct_count;
+    public bool[] badge;
+    public string[] date;
+
+    public UserData(){
+        level = 1;point = 0;
+    }
+
+    public static UserData Deserialize(string json)
+    {
+        UserData _data = JsonUtility.FromJson<UserData>(json);
+        return _data;
+    }
+
+    public static string Serialize(UserData _data)
+    {
+        string json = JsonUtility.ToJson(_data);
+        return json;
+    }
+}
+
+
 
 /* Deserializer Example
 public class MemoDate{

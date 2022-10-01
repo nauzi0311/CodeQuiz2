@@ -26,4 +26,8 @@ public class Timer : MonoBehaviour
             Text.GetComponent<TextMeshProUGUI>().text = (Int32.Parse(Text.GetComponent<TextMeshProUGUI>().text) - 1).ToString();
         }
     }
+
+    public int GetCount(){
+        return Int32.Parse(Text.GetComponent<TextMeshProUGUI>().text);
+    }
 }

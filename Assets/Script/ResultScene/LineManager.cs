@@ -6,7 +6,7 @@ using UnityEngine;
 public class LineManager : MonoBehaviour
 {
     GameObject director;
-    string[] UAnswer;
+    int[] UAnswer;
     float[] Height_list = {0,0,0,0,0,0,0};
     float result_area_y,content_area_y;
     float padding = 150f;
@@ -39,7 +39,7 @@ public class LineManager : MonoBehaviour
         gameObject.GetComponent<RectTransform>().sizeDelta = _size;
     }
 
-    public string GetUAnswer(int num){
+    public int GetUAnswer(int num){
         return director.GetComponent<GameDirector>().GetUAnswer()[num];
     }
 

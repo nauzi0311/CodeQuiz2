@@ -25,7 +25,7 @@ public class SizeAdjuster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Find("UAnswer").GetComponent<TextMeshProUGUI>().text = parent.GetComponent<LineManager>().GetUAnswer(id);
+        transform.Find("UAnswer").GetComponent<TextMeshProUGUI>().text = parent.GetComponent<LineManager>().GetUAnswer(id).ToString();
         //子要素の中で最も高さが高いオブジェクトを取得
         for(int i = 0; i < transform.childCount; i++){
             var child = transform.GetChild(i);

@@ -32,8 +32,6 @@ public class CourseManager : MonoBehaviour
         for(int i = 0; i < transform.childCount; i++){
             sum += transform.GetChild(i).GetComponent<RectTransform>().sizeDelta.y;
         }
-        Debug.Log(sum);
-        Debug.Log(start_delta.y);
         if(sum > start_delta.y){
             gameObject.GetComponent<RectTransform>().sizeDelta = new UnityEngine.Vector2(start_delta.x, sum);
         }

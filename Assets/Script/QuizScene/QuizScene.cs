@@ -9,7 +9,8 @@ public class QuizScene : MonoBehaviour
 {
     public static int _qcount = 0;
     // Start is called before the first frame update
-    GameObject question_source,director,correct_panel,incorrect_panel;
+    GameObject question_source,director,correct_panel,incorrect_panel,Count;
+    static QuestData[] questions;
     List<Dictionary<string,string>> color_code_list = new List<Dictionary<string,string>>(){
         //color_code1
         new Dictionary<string, string>(){
@@ -35,28 +36,21 @@ public class QuizScene : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(++_qcount);
         int color_count_bracket = 0;
         int color_count_curly_bracket = 0;
         var color_theme = color_code_list[0];
         question_source = GameObject.Find("Content");
         director = GameObject.Find("GameDirector");
         correct_panel = GameObject.Find("Correct");
-        Debug.Log(correct_panel.name);
         correct_panel.SetActive(false);
         incorrect_panel = GameObject.Find("Incorrect");
-        Debug.Log(incorrect_panel.name);
         incorrect_panel.SetActive(false);
-        Debug.Log(spchar[(color_count_bracket++)%3]);
-        Debug.Log(color_theme[spchar[(color_count_bracket++)%3]]);
         string source = "<color=" + color_theme["type"] + ">int </color><color=" + color_theme["function"] + 
         ">main</color> <color=" + color_theme[spchar[(color_count_bracket++)%3]] + ">(</color><color=" + color_theme[spchar[(--color_count_bracket)%3]] +">)"+ 
         "</color><color=" + color_theme[spchar[(color_count_curly_bracket++)%3]] + "> {" + "</color>\n" +
         "   int"+" a "+"="+" 10;\n" + 
         "   printf(\"%d\",a)\n" + 
         "}\n\nvoid func(){}\n\nvoid test_func_name_is_too_long(){}";
-        
-        Debug.Log(source);        
         question_source.GetComponent<TextMeshProUGUI>().text = source;
     }
 
@@ -89,6 +83,10 @@ public class QuizScene : MonoBehaviour
         }else{
             director.GetComponent<GameDirector>().MoveScene("QuizPage","FailurePage",time);
         }
+    }
+
+    public static void SetQuestions(QuestData[] _qs){
+        questions = _qs;
     }
 }
 
