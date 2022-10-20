@@ -26,14 +26,12 @@ public class CourseItem : MonoBehaviour
     }
 
     public void OnClick(){
-        Debug.Log(course + "    " + times);
         if(available){
             director.GetComponent<SelectStageScene>().MoveScene("QuizPage",course,times);
         }
     }
 
     public void SetTitle(string _t){
-        Debug.Log(_t[1..^1]);
         transform.Find("Title").gameObject.GetComponent<TextMeshProUGUI>().text = _t;
     }
 

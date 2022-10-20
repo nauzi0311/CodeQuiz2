@@ -20,5 +20,11 @@ public class ResultButton : MonoBehaviour
 
     public void OnClick(){
         director.GetComponent<ResultScene>().MoveScene(Topage);
+        if(Topage == "ScorePage" && ScoreScene._data == null){
+            StartCoroutine(ScoreScene.GetScoreData());
+        }
+        if(Topage == "RankingPage"){
+            StartCoroutine(Ranking.RankingPost());
+        }
     }
 }

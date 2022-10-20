@@ -8,22 +8,17 @@ public class LineManager : MonoBehaviour
     GameObject director;
     int[] UAnswer;
     float[] Height_list = {0,0,0,0,0,0,0};
-    float result_area_y,content_area_y;
-    float padding = 150f;
+    float result_area_y,content_area_y,last_y = 0;
+    //float padding = 150f;
     // Start is called before the first frame update
     void Start()
     {
         director = GameObject.Find("GameDirector");
-        UAnswer = director.GetComponent<GameDirector>().GetUAnswer();
         UnityEngine.Vector2 _size = GetComponent<RectTransform>().sizeDelta;
         result_area_y = GameObject.Find("Result").GetComponent<RectTransform>().sizeDelta.y;
-        Debug.Log(result_area_y);
         result_area_y += 1920;
-        Debug.Log(result_area_y);
         content_area_y = GameObject.Find("Result").transform.Find("Header").gameObject.GetComponent<RectTransform>().sizeDelta.y;
-        Debug.Log(content_area_y);
         content_area_y += 1920;
-        Debug.Log(content_area_y);
     }
 
     // Update is called once per frame
@@ -32,15 +27,16 @@ public class LineManager : MonoBehaviour
         UnityEngine.Vector2 _size = GetComponent<RectTransform>().sizeDelta;
         //Headの高さ
         float _sum_hegiht = 190f;
+        string _debug = "HeightList: ";
         for(int i = 0; i < Height_list.Length; i++){
-            _sum_hegiht += Height_list[i] + padding;
+            _sum_hegiht += Height_list[i];
+            _debug += Height_list[i] +  " ";
         }
-        _size.y = _sum_hegiht - content_area_y;
+        //_size.y = _sum_hegiht - content_area_y;
+        _size.y = -last_y;
+        Debug.Log(_size.x + " " + _size.y + " " + last_y);
         gameObject.GetComponent<RectTransform>().sizeDelta = _size;
-    }
-
-    public int GetUAnswer(int num){
-        return director.GetComponent<GameDirector>().GetUAnswer()[num];
+        Debug.Log(_debug);
     }
 
     public void SetHeight(int num,float height){
@@ -53,10 +49,14 @@ public class LineManager : MonoBehaviour
         int i;
         //指定オブジェクトの下端までのY
         for (i = 0; i < num + 1; i++){
-            ans -= (Height_list[i] + padding) ;
+            ans -= Height_list[i];
         }
         //オブジェクトの中心のYをしていするため
         ans += Height_list[i-1]/2;
         return ans;
+    }
+
+    public void SetLastHeight(float _h){
+        last_y = _h;
     }
 }

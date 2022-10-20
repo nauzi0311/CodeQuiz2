@@ -25,7 +25,7 @@ public class RegisterScene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     public void OnClick(){
@@ -43,7 +43,9 @@ public class RegisterScene : MonoBehaviour
 
     IEnumerator SignUp(Data _d){
         yield return StartCoroutine(GameDirector.WebReqPost("index/signup",Data.Serialize(_d)));
+        GameDirector.userdata = new UserData(_d.school_num);
         GameDirector.config = Config.Deserialize(GameDirector.GetResponse());
+        PlayerPrefs.SetString("Version",GameDirector.config.version);
         director.GetComponent<GameDirector>().MoveScene("RegisterPage","HomePage");
     }
 

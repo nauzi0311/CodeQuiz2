@@ -18,6 +18,14 @@ public class ScoreButton : MonoBehaviour
     }
 
     public void OnClick(){
+        StartCoroutine(MoveScore());
+    }
+
+    IEnumerator MoveScore(){
+        string json = "{\"device\":\"" + PlayerPrefs.GetString("UUID") + "\",\"level\":" + GameDirector.userdata.level + "}";
+        Debug.Log(json);
+        yield return GameDirector.WebReqPost("score",json);
+        Debug.Log(GameDirector.GetResponse());
         director.GetComponent<HomeScene>().MoveScene("ScorePage");
     }
 }

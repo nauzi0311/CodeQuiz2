@@ -6,10 +6,11 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    GameObject Text;
+    GameObject Text,director;
     // Start is called before the first frame update
     void Start()
     {
+        director = GameObject.Find("SceneDirector");
         Text = transform.Find("Count").gameObject;
         StartCoroutine(CountDown());
     }
@@ -25,9 +26,10 @@ public class Timer : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
             Text.GetComponent<TextMeshProUGUI>().text = (Int32.Parse(Text.GetComponent<TextMeshProUGUI>().text) - 1).ToString();
         }
+        director.GetComponent<QuizScene>().MoveScene(5);
     }
 
     public int GetCount(){
-        return Int32.Parse(Text.GetComponent<TextMeshProUGUI>().text);
+        return 60 - Int32.Parse(Text.GetComponent<TextMeshProUGUI>().text);
     }
 }

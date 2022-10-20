@@ -15,6 +15,7 @@ public class TopCanvas : MonoBehaviour
     GameObject director;
     GameObject TextCode;
     float position;
+    public static bool is_update = false;
     void Start()
     {
         director = GameObject.Find("SceneDirector");
@@ -26,13 +27,18 @@ public class TopCanvas : MonoBehaviour
     void Update()
     {
         if(Input.GetMouseButtonDown(0)){
-            if(TextCode.GetComponent<Transform>().localPosition.x > position){
-                director.GetComponent<TopScene>().MoveTitle();
-            }else if(TextCode.GetComponent<Transform>().localPosition.x <= position){
-                director.GetComponent<TopScene>().StartCoroutine("AleartTap");
-                director.GetComponent<TopScene>().MoveScene();
+            if(!is_update){
+                if(TextCode.GetComponent<Transform>().localPosition.x > position){
+                    director.GetComponent<TopScene>().MoveTitle();
+                }else if(TextCode.GetComponent<Transform>().localPosition.x <= position){
+                    StartCoroutine(director.GetComponent<TopScene>().AleartTap());
+                    director.GetComponent<TopScene>().MoveScene();
+                }else{
+                    //never read
+                }
             }else{
-                //never read
+                Debug.Log("Quit");
+                Application.Quit();
             }
         }
         if(TextCode.transform.localPosition.x <= position){

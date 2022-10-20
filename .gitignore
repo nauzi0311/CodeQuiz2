@@ -1,1 +1,10 @@
-!/Assets/
+Logs/
+Packages/
+UserSettings/
+.vsco
+*.csproj
+*.sln
+*.apk
+.vscode
+Assets/Font/NotoSansJP-Regular SDF.asset
+Assets/Font/misaki_gothic SDF.asset

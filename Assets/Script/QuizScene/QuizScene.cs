@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,49 +10,61 @@ public class QuizScene : MonoBehaviour
 {
     public static int _qcount = 0;
     // Start is called before the first frame update
-    GameObject question_source,director,correct_panel,incorrect_panel,Count;
+    GameObject Output,qtext,display_source,director,correct_panel,incorrect_panel,Count;
+    GameObject[] TestButton;
     static QuestData[] questions;
-    List<Dictionary<string,string>> color_code_list = new List<Dictionary<string,string>>(){
-        //color_code1
-        new Dictionary<string, string>(){
-            {"background","#1E1E1E"},
-            {"function","#DCDCAA"},
-            {"type","#569CD6"},
-            {"object","#4EC9B0"},
-            {"special characters1","#FFD700"},
-            {"special characters2","#DA70D6"},
-            {"special characters3","#179FFF"},
-            {"variable","#9CDCFE"},
-            {"STLfunctions","#9CDCFE"},
-            {"const charstrings","#CE9178"},
-            {"const numbers","#B5CEA8"},
-            {"comment","#6A9955"},
-        },
-    };
-    Dictionary<int,string> spchar = new Dictionary<int,string>(){
-        {0,"special characters1"},
-        {1,"special characters2"},
-        {2,"special characters3"},
-    };
+    // List<Dictionary<string,string>> color_code_list = new List<Dictionary<string,string>>(){
+    //     //color_code1
+    //     new Dictionary<string, string>(){
+    //         {"background","#1E1E1E"},
+    //         {"function","#DCDCAA"},
+    //         {"type","#569CD6"},
+    //         {"object","#4EC9B0"},
+    //         {"special characters1","#FFD700"},
+    //         {"special characters2","#DA70D6"},
+    //         {"special characters3","#179FFF"},
+    //         {"variable","#9CDCFE"},
+    //         {"STLfunctions","#9CDCFE"},
+    //         {"const charstrings","#CE9178"},
+    //         {"const numbers","#B5CEA8"},
+    //         {"comment","#6A9955"},
+    //     },
+    // };
+    // Dictionary<int,string> spchar = new Dictionary<int,string>(){
+    //     {0,"special characters1"},
+    //     {1,"special characters2"},
+    //     {2,"special characters3"},
+    // };
 
     void Start()
     {
-        int color_count_bracket = 0;
-        int color_count_curly_bracket = 0;
-        var color_theme = color_code_list[0];
-        question_source = GameObject.Find("Content");
-        director = GameObject.Find("GameDirector");
-        correct_panel = GameObject.Find("Correct");
+        // int color_count_bracket = 0;
+        // int color_count_curly_bracket = 0;
+        // var color_theme = color_code_list[0];
+        Debug.Log(questions[_qcount].ToString());
+        director = GameObject.FindGameObjectWithTag("GameDirector");
+        display_source = GameObject.FindGameObjectWithTag("Source");
+        qtext = GameObject.FindGameObjectWithTag("QText");
+        Output = GameObject.FindGameObjectWithTag("Output");
+        correct_panel = GameObject.FindGameObjectWithTag("Correct");
+        Count = GameObject.FindGameObjectWithTag("Count");
         correct_panel.SetActive(false);
-        incorrect_panel = GameObject.Find("Incorrect");
+        incorrect_panel = GameObject.FindGameObjectWithTag("Incorrect");
         incorrect_panel.SetActive(false);
-        string source = "<color=" + color_theme["type"] + ">int </color><color=" + color_theme["function"] + 
-        ">main</color> <color=" + color_theme[spchar[(color_count_bracket++)%3]] + ">(</color><color=" + color_theme[spchar[(--color_count_bracket)%3]] +">)"+ 
-        "</color><color=" + color_theme[spchar[(color_count_curly_bracket++)%3]] + "> {" + "</color>\n" +
-        "   int"+" a "+"="+" 10;\n" + 
-        "   printf(\"%d\",a)\n" + 
-        "}\n\nvoid func(){}\n\nvoid test_func_name_is_too_long(){}";
-        question_source.GetComponent<TextMeshProUGUI>().text = source;
+        Invoke("SetQuestion",0.1f);
+    }
+
+    void SetQuestion(){
+        string source = questions[_qcount].source;
+        source = source.Replace("\t","  ");
+        source = source.Replace("???","<color=\"red\">???</color>");
+        source = source.Replace("ffd70>","ffd700>");
+        string quiz = questions[_qcount].question;
+        string output = questions[_qcount].output; 
+        output = output.Replace("???","<color=\"red\">???</color>");
+        display_source.GetComponent<TextMeshProUGUI>().text = source;
+        qtext.GetComponent<TextMeshProUGUI>().text = quiz;
+        Output.GetComponent<TextMeshProUGUI>().text = output;
     }
 
     // Update is called once per frame
@@ -61,21 +74,34 @@ public class QuizScene : MonoBehaviour
     }
 
     public void MoveScene(int ans_num,float time = 0.5f){
+        int second;
+        bool correct = false;
         if(ans_num == 0){
-            StartCoroutine(DelayScene(false,time));
-        }else if(ans_num == 1){
+            second = 0;
+        }else if(ans_num == questions[_qcount].answer){
+            correct = true;
+            second = Count.transform.parent.gameObject.GetComponent<Timer>().GetCount();
             correct_panel.SetActive(true);
-            StartCoroutine(DelayScene(true,time));
         }else{
+            if(ans_num == 5){
+                second = 61;
+            }else{
+                second = Count.transform.parent.gameObject.GetComponent<Timer>().GetCount();
+            }
             incorrect_panel.SetActive(true);
-            StartCoroutine(DelayScene(false,time));
         }
+        GameDirector.UAnswer[_qcount] = ans_num;
+        GameDirector.second_list[_qcount] = second;
+        GameDirector.correct_list[_qcount] = correct;
+        if(correct)_qcount++;
+        StartCoroutine(DelayScene(correct,time));
     }
 
     private IEnumerator DelayScene(bool correct,float time = 1.0f){
         yield return new WaitForSeconds(0.5f);
         if(correct){
             if(_qcount == 7){
+                GameDirector.CalculateInResult();
                 director.GetComponent<GameDirector>().MoveScene("QuizPage","ResultPage");
             }else{
                 director.GetComponent<GameDirector>().MoveScene("QuizPage","QuizPage",time);
@@ -87,6 +113,15 @@ public class QuizScene : MonoBehaviour
 
     public static void SetQuestions(QuestData[] _qs){
         questions = _qs;
+    }
+
+    public static void DeleteQuestions(){
+        questions = null;
+        _qcount = 0;
+    }
+
+    public static QuestData[] GetQuestDatas(){
+        return questions;
     }
 }
 

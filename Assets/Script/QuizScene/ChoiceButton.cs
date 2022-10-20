@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ChoiceButton : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class ChoiceButton : MonoBehaviour
     void Start()
     {
         director = GameObject.Find("SceneDirector");
+        TextMeshProUGUI choice = GetComponentInChildren<TextMeshProUGUI>();
+        if(return_num != 0){
+            choice.text = QuizScene.GetQuestDatas()[QuizScene._qcount].choice[return_num-1];
+        }
     }
 
     public void OnClick(){

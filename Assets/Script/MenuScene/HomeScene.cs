@@ -12,7 +12,8 @@ using Debug = UnityEngine.Debug;
 
 public class HomeScene : MonoBehaviour
 {
-    private GameObject DayBox;
+    [SerializeField]
+    List<GameObject> DayLine;
     private GameObject TextYear;
     private GameObject TextMonth;
     private GameObject TextLevel;
@@ -24,21 +25,20 @@ public class HomeScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        director = GameObject.Find("GameDirector");
-        DayBox = GameObject.Find("Day");
-        TextYear = GameObject.Find("Year");
-        TextMonth = GameObject.Find("Month");
+        director = GameObject.FindGameObjectWithTag("GameDirector");
+        TextYear = GameObject.FindGameObjectWithTag("Year");
+        TextMonth = GameObject.FindGameObjectWithTag("Month");
         int ulevel = GameDirector.userdata.level;
-        int upoint = GameDirector.userdata.point;
-        int umaxpoint = GameDirector.config.level[ulevel-1];
-        TextLevel = GameObject.Find("LevelText");
+        int uexp = GameDirector.userdata.exp;
+        int umaxpoint = GameDirector.config.level[ulevel];
+        TextLevel = GameObject.FindGameObjectWithTag("LevelText");
         TextLevel.GetComponent<TextMeshProUGUI>().text = "Lv" + ulevel;
-        LevelScore = GameObject.Find("LevelScore");
-        LevelScore.GetComponent<TextMeshProUGUI>().text = upoint + "/" + umaxpoint;
-        SliderLevel = GameObject.Find("LevelSlider");
-        SliderLevel.GetComponent<Slider>().value = (float)upoint / umaxpoint;
+        LevelScore = GameObject.FindGameObjectWithTag("LevelScore");
+        LevelScore.GetComponent<TextMeshProUGUI>().text = uexp + "/" + umaxpoint;
+        SliderLevel = GameObject.FindGameObjectWithTag("LevelSlider");
+        SliderLevel.GetComponent<Slider>().value = (float)uexp / umaxpoint;
         beforebutton = null;
-        InitialCalender();
+        Invoke("InitialCalender",0.1f);
     }
 
     // Update is called once per frame
@@ -56,8 +56,8 @@ public class HomeScene : MonoBehaviour
         int day = today.Day;
         float alpha_value = .4f;//当該月じゃない日にちのアルファ値
         DayOfWeek dow = new DateTime(year, month, 1).DayOfWeek;//曜日判定
-        GameObject DL1 = DayBox.transform.Find("DayLine1").gameObject;
-        GameObject[] DL1arr = new GameObject[DL1.transform.childCount];
+        GameObject DL1 = DayLine[0];
+        GameObject[] DL1arr = new GameObject[7];
         for(int i = 0; i < DL1arr.Length; i++){
             DL1arr[i] = DL1.transform.Find((i+1).ToString()).gameObject;
         }
@@ -87,9 +87,8 @@ public class HomeScene : MonoBehaviour
         }
         // Set Clander
         for(int i = 1; i < 7; i++){
-            string dayline = "DayLine" + i.ToString();
-            GameObject DL = DayBox.transform.Find(dayline).gameObject;
-            GameObject[] DLarr = new GameObject[DL.transform.childCount];
+            GameObject DL = DayLine[i-1];
+            GameObject[] DLarr = new GameObject[7];
             for(int k = 0; k < DLarr.Length; k++){
                 DLarr[k] = DL.transform.Find((k+1).ToString()).gameObject;
             }
@@ -108,6 +107,11 @@ public class HomeScene : MonoBehaviour
                         if((j + 7*(i-1) - firstcount + 1) == day){
                             DLarr[j].GetComponent<DayButton>().OnClick();
                         }
+                        if(GameDirector.userdata.date.Contains(year + "-" + month.ToString("00") +"-" + (j + 7*(i-1) - firstcount + 1).ToString("00"))){
+                            DLarr[j].transform.Find("Image").gameObject.GetComponent<Image>().enabled = true;
+                        }else{
+                            DLarr[j].transform.Find("Image").gameObject.GetComponent<Image>().enabled = false;
+                        }
                     }
                     continue;
                 }
@@ -116,6 +120,11 @@ public class HomeScene : MonoBehaviour
                     if((j + 7*(i-1) - firstcount + 1) == day){
                         DLarr[j].GetComponent<DayButton>().OnClick();
                     }
+                    if(GameDirector.userdata.date.Contains(year + "-" + month.ToString("00") +"-" + (j + 7*(i-1) - firstcount + 1).ToString("00"))){
+                        DLarr[j].transform.Find("Image").gameObject.GetComponent<Image>().enabled = true;
+                    }else{
+                            DLarr[j].transform.Find("Image").gameObject.GetComponent<Image>().enabled = false;
+                        }
                 }else{
                     DLarr[j].GetComponentInChildren<TextMeshProUGUI>().text = (j + 7*(i-1) - firstcount + 1 - Monthlist[month]).ToString();
                     DLarr[j].GetComponentInChildren<TextMeshProUGUI>().alpha = alpha_value;
@@ -161,8 +170,7 @@ public class HomeScene : MonoBehaviour
                 break;
         }
         for(int i = 1; i < 7; i++){
-            string dayline = "DayLine" + i.ToString();
-            GameObject DL = DayBox.transform.Find(dayline).gameObject;
+            GameObject DL = DayLine[i-1];
             GameObject[] DLarr = new GameObject[DL.transform.childCount];
             for(int k = 0; k < DLarr.Length; k++){
                 DLarr[k] = DL.transform.Find((k+1).ToString()).gameObject;
@@ -185,6 +193,11 @@ public class HomeScene : MonoBehaviour
                                 DLarr[j].GetComponent<DayButton>().OnClick();
                             }
                         }
+                        if(GameDirector.userdata.date.Contains(year + "-" + month.ToString("00") +"-" + (j + 7*(i-1) - firstcount + 1).ToString("00"))){
+                            DLarr[j].transform.Find("Image").gameObject.GetComponent<Image>().enabled = true;
+                        }else{
+                            DLarr[j].transform.Find("Image").gameObject.GetComponent<Image>().enabled = false;
+                        }
                     }
                     continue;
                 }
@@ -195,6 +208,11 @@ public class HomeScene : MonoBehaviour
                         if((j + 7*(i-1) - firstcount + 1) == today.Day){
                             DLarr[j].GetComponent<DayButton>().OnClick();
                         }
+                    }
+                    if(GameDirector.userdata.date.Contains(year + "-" + month.ToString("00") +"-" + (j + 7*(i-1) - firstcount + 1).ToString("00"))){
+                        DLarr[j].transform.Find("Image").gameObject.GetComponent<Image>().enabled = true;
+                    }else{
+                        DLarr[j].transform.Find("Image").gameObject.GetComponent<Image>().enabled = false;
                     }
                 }else{
                     DLarr[j].GetComponentInChildren<TextMeshProUGUI>().text = (j + 7*(i-1) - firstcount + 1 - Monthlist[month]).ToString();
