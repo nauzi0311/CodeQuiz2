@@ -13,12 +13,6 @@ public class ListItem : MonoBehaviour
         director = GameObject.Find("SceneDirector");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnClick(){
         Transform ID = gameObject.transform.Find("Id");
         int _id = Int32.Parse(ID.gameObject.GetComponent<TextMeshProUGUI>().text);

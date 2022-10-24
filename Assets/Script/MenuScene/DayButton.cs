@@ -13,13 +13,7 @@ public class DayButton : MonoBehaviour
         SceneDirector = GameObject.Find("SceneDirector");
         CheckMark = transform.Find("Image").gameObject;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    
     public void OnClick()
     {
         SceneDirector.GetComponent<HomeScene>().SelectDayButton(this.GetComponent<Outline>());

@@ -19,12 +19,6 @@ public class CourseItem : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnClick(){
         if(available){
             director.GetComponent<SelectStageScene>().MoveScene("QuizPage",course,times);

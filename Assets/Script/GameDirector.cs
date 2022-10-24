@@ -96,6 +96,17 @@ public class GameDirector : MonoBehaviour
                 return;
             }
         }
+
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            // エスケープキー取得
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                // アプリケーション終了
+                Application.Quit();
+                return;
+            }
+        }
     }
 
     public void MoveScene(string Here, string ToPage, float time = 1.0f)

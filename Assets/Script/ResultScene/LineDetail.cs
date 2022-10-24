@@ -14,12 +14,6 @@ public class LineDetail : MonoBehaviour
         director = GameObject.Find("SceneDirector");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void OnClick(){
         int _id = Int32.Parse(Id.GetComponent<TextMeshProUGUI>().text);
         StartCoroutine(director.GetComponent<ResultScene>().DetailPost(_id));

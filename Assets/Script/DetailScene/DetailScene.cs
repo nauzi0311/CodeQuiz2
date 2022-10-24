@@ -27,10 +27,4 @@ public class DetailScene : MonoBehaviour
         output = output.Replace("???","<color=\"red\">???</color>");
         Output.GetComponent<TextMeshProUGUI>().text = output;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

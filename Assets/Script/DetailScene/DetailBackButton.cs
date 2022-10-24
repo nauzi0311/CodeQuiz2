@@ -13,12 +13,6 @@ public class DetailBackButton : MonoBehaviour
         director = GameObject.Find("GameDirector");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnClick(){
         if(ToPage == ""){
             director.GetComponent<GameDirector>().MoveScene("DetailPage",GameDirector.GetFromPage());

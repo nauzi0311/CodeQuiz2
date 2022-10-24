@@ -21,13 +21,6 @@ public class RegisterScene : MonoBehaviour
         uuid = System.Guid.NewGuid().ToString();
         PlayerPrefs.SetString("UUID",uuid);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnClick(){
         //you need fix
         string id = _idfield.GetComponent<TMP_InputField>().text;

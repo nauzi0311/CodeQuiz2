@@ -12,12 +12,6 @@ public class ResultButton : MonoBehaviour
         director = GameObject.Find("SceneDirector");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnClick(){
         director.GetComponent<ResultScene>().MoveScene(Topage);
         if(Topage == "ScorePage" && ScoreScene._data == null){

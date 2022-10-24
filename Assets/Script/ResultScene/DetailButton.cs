@@ -14,13 +14,6 @@ public class DetailButton : MonoBehaviour
         parent = transform.parent;
         director = GameObject.Find("GameDirector");
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnClick(){
         int id = Int32.Parse(parent.Find("ID").GetComponent<TextMeshProUGUI>().text);
         StartCoroutine(PostDetail(id));

@@ -14,12 +14,6 @@ public class BackButton : MonoBehaviour
         director = GameObject.Find("GameDirector");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnClick(){
         if(ToPage == ""){
             director.GetComponent<GameDirector>().MoveScene(HerePage,GameDirector.GetFromPage());

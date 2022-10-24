@@ -13,34 +13,9 @@ public class QuizScene : MonoBehaviour
     GameObject Output,qtext,display_source,director,correct_panel,incorrect_panel,Count;
     GameObject[] TestButton;
     static QuestData[] questions;
-    // List<Dictionary<string,string>> color_code_list = new List<Dictionary<string,string>>(){
-    //     //color_code1
-    //     new Dictionary<string, string>(){
-    //         {"background","#1E1E1E"},
-    //         {"function","#DCDCAA"},
-    //         {"type","#569CD6"},
-    //         {"object","#4EC9B0"},
-    //         {"special characters1","#FFD700"},
-    //         {"special characters2","#DA70D6"},
-    //         {"special characters3","#179FFF"},
-    //         {"variable","#9CDCFE"},
-    //         {"STLfunctions","#9CDCFE"},
-    //         {"const charstrings","#CE9178"},
-    //         {"const numbers","#B5CEA8"},
-    //         {"comment","#6A9955"},
-    //     },
-    // };
-    // Dictionary<int,string> spchar = new Dictionary<int,string>(){
-    //     {0,"special characters1"},
-    //     {1,"special characters2"},
-    //     {2,"special characters3"},
-    // };
 
     void Start()
     {
-        // int color_count_bracket = 0;
-        // int color_count_curly_bracket = 0;
-        // var color_theme = color_code_list[0];
         Debug.Log(questions[_qcount].ToString());
         director = GameObject.FindGameObjectWithTag("GameDirector");
         display_source = GameObject.FindGameObjectWithTag("Source");
@@ -65,12 +40,6 @@ public class QuizScene : MonoBehaviour
         display_source.GetComponent<TextMeshProUGUI>().text = source;
         qtext.GetComponent<TextMeshProUGUI>().text = quiz;
         Output.GetComponent<TextMeshProUGUI>().text = output;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void MoveScene(int ans_num,float time = 0.5f){
@@ -124,18 +93,3 @@ public class QuizScene : MonoBehaviour
         return questions;
     }
 }
-
-/*
-color code
-background:         1E1E1E
-function:           DCDCAA
-type:               569CD6
-Object:             4EC9B0
-special characters: FFD700,DA70D6,179FFF  e.g.)(){}
-variable:           9CDCFE
-STLfunctions:       9CDCFE
-const charstrings:  CE9178
-const numbers:      B5CEA8
-comment:            6A9955
-*/
-

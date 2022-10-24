@@ -11,12 +11,6 @@ public class RankingBackButton : MonoBehaviour
         director = GameObject.Find("GameDirector");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnClick(){
         director.GetComponent<GameDirector>().MoveScene("RankingPage","HomePage");
     }

@@ -28,12 +28,6 @@ public class FailureScene : MonoBehaviour
         Output.GetComponent<TextMeshProUGUI>().text = output;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void MoveScene(){
         if(QuizScene._qcount == 7){
             GameDirector.CalculateInResult();

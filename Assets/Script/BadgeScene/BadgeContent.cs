@@ -15,12 +15,6 @@ public class BadgeContent : MonoBehaviour
         Badge.SetActive(GameDirector.userdata.badge[badge_count]);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnClick(){
         director.GetComponent<BadgeScene>().ViewDetail(badge_count);
     }

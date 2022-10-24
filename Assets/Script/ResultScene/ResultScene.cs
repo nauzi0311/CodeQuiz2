@@ -74,12 +74,6 @@ public class ResultScene : MonoBehaviour
         this.MoveScene("DetailPage");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void MoveScene(string Topage){
         director.GetComponent<GameDirector>().MoveScene("ResultPage",Topage);
     }

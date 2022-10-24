@@ -1,6 +1,7 @@
 Logs/
 Packages/
 UserSettings/
+Temp/
 .vsco
 *.csproj
 *.sln

@@ -23,12 +23,6 @@ public class BadgeScene : MonoBehaviour
         Canvas.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void MoveScene(){
         director.GetComponent<GameDirector>().MoveScene("BadgeScene",GameDirector.GetFromPage());
     }

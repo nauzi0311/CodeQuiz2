@@ -40,13 +40,6 @@ public class HomeScene : MonoBehaviour
         beforebutton = null;
         Invoke("InitialCalender",0.1f);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void InitialCalender(){
         DateTime today = DateTime.Now;
         int year = today.Year;

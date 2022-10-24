@@ -37,13 +37,6 @@ public class Ranking : MonoBehaviour
         
         
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public static IEnumerator RankingPost(){
         string json = "{\"device\":\"" + PlayerPrefs.GetString("UUID") + "\"}";
         yield return GameDirector.WebReqPost("rank",json);

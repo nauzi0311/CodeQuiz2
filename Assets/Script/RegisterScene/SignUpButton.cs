@@ -11,12 +11,6 @@ public class SignUpButton : MonoBehaviour
         director = GameObject.Find("SceneDirector");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnClick(){
         director.GetComponent<RegisterScene>().OnClick();
     }

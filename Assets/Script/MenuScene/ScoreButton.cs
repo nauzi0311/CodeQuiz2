@@ -11,12 +11,6 @@ public class ScoreButton : MonoBehaviour
         director = GameObject.Find("SceneDirector");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnClick(){
         StartCoroutine(MoveScore());
     }

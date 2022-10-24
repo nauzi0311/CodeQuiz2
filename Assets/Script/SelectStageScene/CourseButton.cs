@@ -25,11 +25,6 @@ public class CourseButton : MonoBehaviour
             CourseTitle.Add(item);
         }
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void OnClick(){
         if(available){

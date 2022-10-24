@@ -19,10 +19,4 @@ public class RankingScene : MonoBehaviour
             LScore.GetComponent<TextMeshProUGUI>()
         );
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

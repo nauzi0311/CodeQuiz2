@@ -14,12 +14,6 @@ public class CourseManager : MonoBehaviour
         start_delta = gameObject.GetComponent<RectTransform>().sizeDelta;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Adjuster(int course_num){
         float sum = 0.0f;
         string _opened = "Course" + (course_num).ToString();

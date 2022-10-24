@@ -15,12 +15,6 @@ public class Timer : MonoBehaviour
         StartCoroutine(CountDown());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     IEnumerator CountDown(){
         for(int i = 0; i < 60;i++){
             yield return new WaitForSeconds(1.0f);

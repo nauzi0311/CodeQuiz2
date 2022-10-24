@@ -40,12 +40,6 @@ public class ScoreScene : MonoBehaviour
         Content.GetComponent<adjuster>().SizeAdjuster(_data.id_list.Length);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public IEnumerator MoveDetail(int _id){
         string json = "{\"device\":\"" + PlayerPrefs.GetString("UUID") + "\",\"id\":\"" + _id + "\"}";
         Debug.Log(json);
